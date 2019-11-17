@@ -18,6 +18,7 @@
 #      <FILE>.o - Builds <FILE>.o object file
 #      <FILE>.asm - builds <FILE>.asm assembly file
 #      <FILE>.i - builds <FILE>.i preprocessor file
+#      <FILE>.d - builds
 #
 # Platform Overrides:
 #      PLATFORM - for cross compilation (MSP432, HOST)
@@ -55,6 +56,8 @@ PP = $(SOURCES:.c=.i)
 
 ASM = $(SOURCES:.c=.asm)
 
+Dep = $(SOURCES:.c=.dep)
+
 
 %.o : %.c
 	$(CC) -c $< $(CPPFLAGS) $(CLFAGS) $(GFLAGS) -o $@
@@ -65,19 +68,23 @@ ASM = $(SOURCES:.c=.asm)
 %.asm : %.c
 	$(CC) -S $< $(CPPFLAGS) $(CLFAGS) $(GFLAGS) -o $@
 
+%.dep : %.c
+	$(CC) -S $< $(CPPFLAGS) $(CLFAGS) $(GFLAGS) -o $@
+
 
 .PHONY: compile-all
 compile-all: build
 
 .PHONY: build
-all: $(TARGET).out
+build: $(TARGET).out
 
 $(TARGET).out: $(OBJS)
 	$(CC) $(OBJS) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@
 
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(TARGET).out $(TARGET).map
+	rm -f $(OBJS) $(TARGET).out $(TARGET).map *.dep *.asm \
+		$(TARGET).i
 .PHONY: size
 size:	
 	$(SIZE) -Atd $(TARGET).out
