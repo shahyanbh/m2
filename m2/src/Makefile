@@ -80,7 +80,7 @@ build: $(TARGET).out
 
 $(TARGET).out: $(OBJS)
 	$(CC) $(OBJS) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o $@
-	echo done compiling the files
+	echo done compiling the files Made output files and Obj files
 
 .PHONY: clean
 clean:
