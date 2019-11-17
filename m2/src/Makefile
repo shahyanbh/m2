@@ -15,10 +15,12 @@
 # Use: make [TARGET] [PLATFORM-OVERRIDES]
 #
 # Build Targets:
-#      <Put a description of the supported targets here>
+#      <FILE>.o - Builds <FILE>.o object file
+#      <FILE>.asm - builds <FILE>.asm assembly file
+#      <FILE>.i - builds <FILE>.i preprocessor file
 #
 # Platform Overrides:
-#      <Put a description of the supported Overrides here
+#      PLATFORM - for cross compilation (MSP432, HOST)
 #
 #------------------------------------------------------------------------------
 include sources.mk
@@ -76,4 +78,7 @@ $(TARGET).out: $(OBJS)
 .PHONY: clean
 clean:
 	rm -f $(OBJS) $(TARGET).out $(TARGET).map
-
+.PHONY: size
+size:	
+	$(SIZE) -Atd $(TARGET).out
+       
